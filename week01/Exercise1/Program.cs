@@ -1,6 +1,6 @@
 using System;
 
-class Program
+partial class Program
 {
     static void Main()
     {
@@ -12,7 +12,7 @@ class Program
         Console.Write("What is your last name? ");
         string lastName = Console.ReadLine();
 
-        // Print the formatted output
+        // Return introduction James Bond Style
         Console.WriteLine($"\nYour name is {lastName}, {firstName} {lastName}.");
     }
 }
