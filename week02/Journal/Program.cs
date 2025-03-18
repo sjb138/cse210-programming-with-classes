@@ -116,7 +116,7 @@ class Program
             switch (choice)
             {
                 case "1":
-                    journal.AddEntry
+                    journal.AddEntry();
                     break;
                 case "2":
                     journal.DisplayJournal();
