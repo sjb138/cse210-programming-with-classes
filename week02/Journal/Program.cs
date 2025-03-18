@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
+
 class Entry
 {
     public string Date { get; set; }
@@ -20,6 +21,9 @@ class Entry
         Console.WriteLine($"Date: {Date}\nPrompt: {Prompt}\nResponse: {Response}\n");
     }
 }
+
+
+
 
 class Journal
 {
@@ -87,6 +91,12 @@ class Journal
         }
     }
 }
+
+
+
+
+
+
 
 class Program
 {
