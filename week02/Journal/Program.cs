@@ -53,7 +53,7 @@ class Journal
         }
     }
 
-    public void SaveToFile()
+    public void Save()
     {
         Console.Write("Enter filename to save: ");
         string filename = Console.ReadLine();
@@ -67,7 +67,7 @@ class Journal
         Console.WriteLine("Journal Saved.");
     }
 
-    public void LoadFromFile()
+    public void LoadFile()
     {
         Console.Write("Enter filename to load: ");
         string filename = Console.ReadLine();
@@ -122,10 +122,10 @@ class Program
                     journal.DisplayJournal();
                     break;
                 case "3":
-                    journal.SaveToFile();
+                    journal.Save();
                     break;
                 case "4":
-                    journal.LoadFromFile();
+                    journal.LoadFile();
                     break;
                 case "5":
                     return;
