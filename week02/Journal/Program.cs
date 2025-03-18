@@ -97,7 +97,6 @@ class Journal
 
 
 
-
 class Program
 {
     static void Main()
