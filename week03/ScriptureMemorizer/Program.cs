@@ -1,31 +1,90 @@
+class Reference
+{
+    private string _book;
+    private int _chapter;
+    private int _startVerse;
+    private int? _endVerse;
+
+    public Reference(string book, int chapter, int verse)
+    {
+        _book = book;
+        _chapter = chapter;
+        _startVerse = verse;
+        _endVerse = null;
+    }
+
+    public Reference(string book, int chapter, int startVerse, int endVerse)
+    {
+        _book = book;
+        _chapter = chapter;
+        _startVerse = startVerse;
+        _endVerse = endVerse;
+    }
+
+    public override string ToString()
+    {
+        return _endVerse == null ? $"{_book} {_chapter}:{_startVerse}" : $"{_book} {_chapter}:{_startVerse}-{_endVerse}";
+    }
+}
+
+
+class Word
+{
+    private string _text;
+    private bool _isHidden;
+
+    public bool IsHidden => _isHidden;
+
+    public Word(string text)
+    {
+        _text = text;
+        _isHidden = false;
+    }
+
+    public void Hide()
+    {
+        if (!_isHidden)
+        {
+            _isHidden = true;
+        }
+    }
+
+    public override string ToString()
+    {
+        return _isHidden ? new string('_', _text.Length) : _text;
+    }
+}
+
+
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 class Scripture
 {
-    private Reference Reference;
-    private List<Word> Words;
-    private Random random = new Random();
+    private Reference _reference;
+    private List<Word> _words;
+    private Random _random = new Random();
 
     public Scripture(string book, int chapter, int verse, string text)
     {
-        Reference = new Reference(book, chapter, verse);
-        Words = text.Split(' ').Select(w => new Word(w)).ToList();
+        _reference = new Reference(book, chapter, verse);
+        _words = text.Split(' ').Select(w => new Word(w)).ToList();
     }
 
     public Scripture(string book, int chapter, int startVerse, int endVerse, string text)
     {
-        Reference = new Reference(book, chapter, startVerse, endVerse);
-        Words = text.Split(' ').Select(w => new Word(w)).ToList();
+        _reference = new Reference(book, chapter, startVerse, endVerse);
+        _words = text.Split(' ').Select(w => new Word(w)).ToList();
     }
 
     public void HideWords(int count)
     {
-        List<Word> visibleWords = Words.Where(w => !w.IsHidden).ToList();
+        List<Word> visibleWords = _words.Where(w => !w.IsHidden).ToList();
         for (int i = 0; i < count && visibleWords.Count > 0; i++)
         {
-            int index = random.Next(visibleWords.Count);
+            int index = _random.Next(visibleWords.Count);
             visibleWords[index].Hide();
             visibleWords.RemoveAt(index);
         }
@@ -34,77 +93,32 @@ class Scripture
     public void Display()
     {
         Console.Clear();
-        Console.WriteLine(Reference);
-        Console.WriteLine(string.Join(" ", Words));
+        Console.WriteLine(_reference);
+        Console.WriteLine(string.Join(" ", _words));
     }
 
     public bool IsFullyHidden()
     {
-        return Words.All(w => w.IsHidden);
+        return _words.All(w => w.IsHidden);
     }
 }
 
-class Reference
-{
-    private string Book;
-    private int Chapter;
-    private int StartVerse;
-    private int? EndVerse;
 
-    public Reference(string book, int chapter, int verse)
-    {
-        Book = book;
-        Chapter = chapter;
-        StartVerse = verse;
-        EndVerse = null;
-    }
 
-    public Reference(string book, int chapter, int startVerse, int endVerse)
-    {
-        Book = book;
-        Chapter = chapter;
-        StartVerse = startVerse;
-        EndVerse = endVerse;
-    }
-
-    public override string ToString()
-    {
-        return EndVerse == null ? $"{Book} {Chapter}:{StartVerse}" : $"{Book} {Chapter}:{StartVerse}-{EndVerse}";
-    }
-}
-
-class Word
-{
-    private string Text;
-    public bool IsHidden { get; private set; }
-
-    public Word(string text)
-    {
-        Text = text;
-        IsHidden = false;
-    }
-
-    public void Hide()
-    {
-        IsHidden = true;
-    }
-
-    public override string ToString()
-    {
-        return IsHidden ? new string('_', Text.Length) : Text;
-    }
-}
+using System;
 
 class Program
 {
     static void Main()
     {
-        Scripture scripture = new Scripture("John", 3, 16, "For God so loved the world that he gave his only begotten Son that whosoever believeth in him should not perish but have everlasting life.");
-        
+        Scripture scripture = new Scripture("John", 3, 16, 
+            "For God so loved the world that he gave his only begotten Son " +
+            "that whosoever believeth in him should not perish but have everlasting life.");
+
         while (true)
         {
             scripture.Display();
-            Console.WriteLine("Press Enter to hide more words, or type 'quit' to exit.");
+            Console.WriteLine("\nPress Enter to hide more words, or type 'quit' to exit.");
             string input = Console.ReadLine();
             
             if (input.ToLower() == "quit")
@@ -115,7 +129,7 @@ class Program
             if (scripture.IsFullyHidden())
             {
                 scripture.Display();
-                Console.WriteLine("All words are hidden! Press Enter to exit.");
+                Console.WriteLine("\nAll words are hidden! Press Enter to exit.");
                 Console.ReadLine();
                 break;
             }
